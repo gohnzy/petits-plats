@@ -1,0 +1,15 @@
+{
+  "name": "lespetitsplats",
+  "version": "1.0.0",
+  "description": "Projet 7 : Les petits plats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tailwindcss -i ./src/input.css -o ./style/output.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.6"
+  }
+}
