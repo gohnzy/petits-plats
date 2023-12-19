@@ -1,5 +1,6 @@
 import { recipes } from "../datas/recipes.js";
-import { article } from "./article.js";
+import { article } from "./factories/articleFactory.js";
+import { filters } from "./factories/filterFactory.js";
 
 const sub = document.querySelector("form")
 
@@ -40,7 +41,12 @@ function init() {
     const section = document.querySelector(".recipes");
     articleFactory.init(section);
     articleFactory.createArticle(recipes);
-    articleFactory.countRecipes(recipes)
+    articleFactory.countRecipes(recipes);
+
+    const filterFactory = new filters();
+
+    const ingredientFilter = document.querySelector(".forIngredients");
+    filterFactory.addFilters(ingredientFilter);
 }
 
 init()

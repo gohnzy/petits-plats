@@ -153,6 +153,8 @@ main {
     max-width: 1440px;
     background-color: #ededed;
     margin: auto;
+    position: relative;
+    box-sizing: border-box;
 
     & section.filters {
         // display: flex;
@@ -161,6 +163,40 @@ main {
         // align-items: center;
         // padding: 50px 10px 0 10px;
         // box-sizing: border-box;
+        padding: 0px 110px;
+        position: absolute;
+        top: 30px;
+        z-index: 10;
+        width: 100%;
+        max-width: 1440px;
+        box-sizing: border-box;
+
+        @media (max-width:1269px) {
+            width: 100%;
+            max-width: 954px;
+            margin: auto;
+            padding: 55px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width:830px) {
+            flex-direction: column;
+        }
+
+        & .dropdown {
+            flex: 0 1 0;
+            box-sizing: border-box;
+            padding: 0px 0 0 0;
+            margin-right: 50px;
+            align-items: center;
+
+            @media (max-width:1269px) {
+                margin-right: 10px;
+            }
+            @media (max-width:830px) {
+                padding-top: 15px;
+            }
+        }
 
         & .dropdown-menu, .dropdown button {
             width: 195px;
@@ -175,25 +211,55 @@ main {
             color: #1b1b1b;
         }
 
-        & .dropdown-menu {
-            border-radius: 0 0px 8px 8px;
+        & button {
+            cursor: pointer;
         }
 
         & .dropdown-menu {
+            border-radius: 0 0px 8px 8px;
             display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 15px;
+
+            & label {
+                display: flex;
+                justify-content: start;
+                gap: 40px;
+                box-sizing: border-box;
+                padding: 10px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
+
         
         & .dropdown:hover .dropdown-menu {
-            display: block;
-            cursor: pointer;
+            display: flex;
+            transition: 0;
         }
-        
+
+
         & .dropdown:hover button {
             border-radius: 8px 8px 0 0;
+
+            transition: 0;
         }
         // & :nth-child(1), :nth-child(2), :nth-child(3) {
             
         // }
+
+        & .results {
+            text-align: end;
+            padding: 18px 0 0 0;
+
+            @media (max-width:1269px) {
+              
+            }
+
+        }
     }
 
     & section.recipes {
@@ -205,6 +271,7 @@ main {
         padding: 50px 10px;
         width: 100%;
         box-sizing: border-box;
+        padding-top: 130px;
 
         & article {
             position: relative;
@@ -255,10 +322,6 @@ main {
                 display: grid;
                 grid-template-rows: 1fr 0.5fr 2fr 0.5fr 4fr;
                 height: 478px;
-
-                & .recipeFixText {
-
-                }
 
                 & .recipeDescription {
                     font-family: $second-font;

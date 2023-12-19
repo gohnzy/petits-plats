@@ -29,29 +29,26 @@
         </header>
         <main>
             <section class="filters row">
-                <div class="dropdown col">
+                <div class="dropdown col forIngredients">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Ingrédients
+                    </button>
+                </div>
+                <div class="dropdown col forDevices">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Appareils
                     </button>
                     <ul class="dropdown-menu">
                         <!-- Options -->
                     </ul>
                 </div>
-                <div class="dropdown col">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Appareils
-                </button>
-                <ul class="dropdown-menu">
-                    <!-- Options -->
-                </ul>
-                </div>
-                <div class="dropdown col">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Ustensiles
-                </button>
-                <ul class="dropdown-menu">
-                    <!-- Options -->
-                </ul>
+                <div class="dropdown col forUstensils">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ustensiles
+                    </button>
+                    <ul class="dropdown-menu">
+                        <!-- Options -->
+                    </ul>
                 </div>
                 <h2 class="results col"></h2>
             </section>
@@ -59,7 +56,8 @@
         </main>
         <footer></footer>
         <script type="module" src="../scripts/index.js"></script>
-        <script type="module" src="../scripts/article.js"></script>
+        <script type="module" src="../scripts/factories/articleFactory.js"></script>
+        <script type="module" src="../scripts/factories/filterFactory.js"></script>
         <script type="module" src="../datas/recipes.js"></script>
     </body>
 </html>

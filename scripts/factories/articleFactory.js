@@ -1,38 +1,40 @@
-import { recipes } from "../datas/recipes.js";
+import { thisDatas } from "../datas.js";
 
 export class article {
-    recipesDatas = [];
+
     recipeCount = 0;
 
     constructor() {}
 
     init(section) {
-        this.dataSet();
         this.recipeList(section);
     }
 
-    dataSet() {
-        this.recipesDatas = recipes;
+    async callDatas() {
+        const datasFrom = new thisDatas();
+        this.recipesDatas =  datasFrom.dataSet();
+        return this.recipesDatas;
     }
 
-    recipeList(section) {
+    async recipeList(section) {
         section.innerHTML = "";
-        this.recipesDatas.forEach(r => {
-            section.appendChild(this.createArticle(r))
+        const recipesDatas = await this.callDatas();
+        recipesDatas.forEach(r => {
+            section.appendChild(this.createArticle(r));
         });
     }
 
-    countRecipes(filteredRecipes) {
+    async countRecipes(filteredRecipes) {
+        const recipesLength = (await this.callDatas());
         const recipesCount = document.querySelector(".results");
-        recipesCount.innerText = `${recipes.length} recettes`;
-
+        recipesCount.innerText = `${recipesLength.length} recettes`;
     }
 
     createArticle(datas) {
         const {id, image, name, ingredients,time, description} = datas;
 
         if(id === undefined) {
-            console.log("ERROR 404");
+            console.log("Glace à la".length);
         } else {
             const article = document.createElement("article");
             article.setAttribute("id", `${id}`);
@@ -44,7 +46,7 @@ export class article {
             const duration = document.createElement("em");
             duration.classList.add("recipeDuration");
             duration.innerText = time+"min";
-            article.appendChild(duration)
+            article.appendChild(duration);
 
             const recipeText = document.createElement("div");
             recipeText.classList.add("recipeText");
@@ -82,7 +84,12 @@ export class article {
 
                 const ingredientName = document.createElement("p");
                 ingredientName.classList.add("ingredientName");
-                ingredientName.innerText = i.ingredient;
+                if(i.ingredient.length > 14) {
+                    ingredientName.innerText = i.ingredient.substring(0,14) + '...';
+                } else {
+                    ingredientName.innerText = i.ingredient;
+                }
+                
                 ingredientDiv.appendChild(ingredientName);
 
                 const ingredientQuantity = document.createElement("em");

@@ -140,6 +140,48 @@ main {
   max-width: 1440px;
   background-color: #ededed;
   margin: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+main section.filters {
+  padding: 0px 110px;
+  position: absolute;
+  top: 30px;
+  z-index: 10;
+  width: 100%;
+  max-width: 1440px;
+  box-sizing: border-box;
+}
+@media (max-width: 1269px) {
+  main section.filters {
+    width: 100%;
+    max-width: 954px;
+    margin: auto;
+    padding: 55px;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 830px) {
+  main section.filters {
+    flex-direction: column;
+  }
+}
+main section.filters .dropdown {
+  flex: 0 1 0;
+  box-sizing: border-box;
+  padding: 0px 0 0 0;
+  margin-right: 50px;
+  align-items: center;
+}
+@media (max-width: 1269px) {
+  main section.filters .dropdown {
+    margin-right: 10px;
+  }
+}
+@media (max-width: 830px) {
+  main section.filters .dropdown {
+    padding-top: 15px;
+  }
 }
 main section.filters .dropdown-menu, main section.filters .dropdown button {
   width: 195px;
@@ -153,18 +195,37 @@ main section.filters .dropdown-menu, main section.filters .dropdown button {
   background-color: white;
   color: #1b1b1b;
 }
+main section.filters button {
+  cursor: pointer;
+}
 main section.filters .dropdown-menu {
   border-radius: 0 0px 8px 8px;
-}
-main section.filters .dropdown-menu {
   display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+}
+main section.filters .dropdown-menu label {
+  display: flex;
+  justify-content: start;
+  gap: 40px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+main section.filters .dropdown-menu label:hover {
+  cursor: pointer;
 }
 main section.filters .dropdown:hover .dropdown-menu {
-  display: block;
-  cursor: pointer;
+  display: flex;
+  transition: 0;
 }
 main section.filters .dropdown:hover button {
   border-radius: 8px 8px 0 0;
+  transition: 0;
+}
+main section.filters .results {
+  text-align: end;
+  padding: 18px 0 0 0;
 }
 main section.recipes {
   flex-wrap: wrap;
@@ -175,6 +236,7 @@ main section.recipes {
   padding: 50px 10px;
   width: 100%;
   box-sizing: border-box;
+  padding-top: 130px;
 }
 main section.recipes article {
   position: relative;
