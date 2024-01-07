@@ -45,8 +45,11 @@ function init() {
 
     const filterFactory = new filters();
 
-    const ingredientFilter = document.querySelector(".forIngredients");
-    filterFactory.addFilters(ingredientFilter);
+    const ingredientFilter = document.querySelector(".ingredientFilter");
+    const applianceFilter = document.querySelector(".applianceFilter");
+    const ustensilFilter = document.querySelector(".ustensilFilter");
+
+    filterFactory.addFilters(ingredientFilter, applianceFilter, ustensilFilter);
 }
 
 init()

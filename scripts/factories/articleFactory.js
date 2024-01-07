@@ -34,7 +34,7 @@ export class article {
         const {id, image, name, ingredients,time, description} = datas;
 
         if(id === undefined) {
-            console.log("Glace à la".length);
+
         } else {
             const article = document.createElement("article");
             article.setAttribute("id", `${id}`);

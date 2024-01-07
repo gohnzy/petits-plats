@@ -213,6 +213,9 @@ main {
 
         & button {
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         & .dropdown-menu {
@@ -221,13 +224,13 @@ main {
             flex-direction: column;
             justify-content: space-between;
             gap: 15px;
+            padding: 0;
 
             & label {
                 display: flex;
                 justify-content: start;
-                gap: 40px;
                 box-sizing: border-box;
-                padding: 10px;
+                padding: 10px 16px;
 
                 &:hover {
                     cursor: pointer;
@@ -235,16 +238,35 @@ main {
             }
         }
 
-        
-        & .dropdown:hover .dropdown-menu {
+        // & .dropdown:hover .dropdown-menu {
+        //     display: flex;
+        //     transition: 0;
+        // }
+
+        & .dropdown-menu {
             display: flex;
             transition: 0;
-        }
 
+            & input[type="text"] {
+                width: 100%;
+                height: 36px;
+                border: 1px solid #c6c6c6;
+                border-radius: 3px;
+                font-size: 14px;
+                color: #7a7a7a;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            & input[type="checkbox"] {
+                appearance: none;
+            }
+        }
 
         & .dropdown:hover button {
             border-radius: 8px 8px 0 0;
-
             transition: 0;
         }
         // & :nth-child(1), :nth-child(2), :nth-child(3) {
