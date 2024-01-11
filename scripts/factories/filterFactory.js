@@ -63,6 +63,13 @@ export class filters {
 
         this.allIngredients.forEach(a => {
             ingredientFilter.appendChild(this.ingredientFilter(a.normalizedLabel)).appendChild(this.ingredientFilterNames(a.label));
+            const thisElement = document.querySelector(`[for="${a.normalizedLabel}"]`);
+            thisElement.addEventListener("change", (event) => {
+                const entireParent = event.target.parentNode;
+                const ingredientFilter = document.querySelector("ingredientFilter");
+                
+                entireParent.style.display = "none";
+            });
         });
 
         this.allUstensils.forEach(a => {
@@ -72,12 +79,12 @@ export class filters {
         this.allAppliances.forEach(a => {
             applianceFilter.appendChild(this.applianceFilter(a.normalizedLabel)).appendChild(this.applianceFilterNames(a.label));
         })
-
     }
 
     ingredientFilter(normalizedName) {
         const filterOption = document.createElement("label");
         filterOption.setAttribute("for", normalizedName);
+        filterOption.classList.add("labelForChoice");
 
         const inputOption = document.createElement("input");
         inputOption.setAttribute("name", normalizedName);
@@ -92,6 +99,7 @@ export class filters {
     applianceFilter(normalizedLabel) {
         const filterOption = document.createElement("label");
         filterOption.setAttribute("for", normalizedLabel);
+        filterOption.classList.add("labelForChoice");
 
         const inputOption = document.createElement("input");
         inputOption.setAttribute("name", normalizedLabel);
@@ -106,11 +114,15 @@ export class filters {
     ustensilFilter(normalizedLabel) {
         const filterOption = document.createElement("label");
         filterOption.setAttribute("for", normalizedLabel);
+        filterOption.classList.add("labelForChoice");
 
         const inputOption = document.createElement("input");
         inputOption.setAttribute("name", normalizedLabel);
         inputOption.setAttribute("type", "checkbox");
         inputOption.setAttribute("id", normalizedLabel);
+
+        inputOption.addEventListener("change",(event) => {
+        })
 
         filterOption.appendChild(inputOption);
 
@@ -138,3 +150,4 @@ export class filters {
         return ustensilsName
     }
 }
+

@@ -5,12 +5,14 @@ import { filters } from "./factories/filterFactory.js";
 const sub = document.querySelector("form")
 
 sub.addEventListener("submit", (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    console.log(input.value);
+    clearInput();
 })
 
 
-var input = document.getElementById('search');
-var clearIcon = document.querySelector('.clear-icon');
+const input = document.getElementById('search');
+const clearIcon = document.querySelector('.clear-icon');
 
 input.addEventListener("input", () => {
     toggleClearIcon()
