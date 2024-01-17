@@ -3403,7 +3403,6 @@ textarea.form-control-lg {
 .dropdown-center {
   position: relative;
 }
-
 .dropdown-toggle {
   white-space: nowrap;
 }
@@ -3418,6 +3417,7 @@ textarea.form-control-lg {
   top: 50%;
   right: 8px; 
   transform: translateY(-50%);
+
 }
 .dropdown-toggle::after {
   content: "";
@@ -3430,6 +3430,13 @@ textarea.form-control-lg {
   top: 50%;
   right: 8px; 
   transform: translateY(-50%);
+
+}
+
+.dropdown-toggle:hover::before,
+.dropdown-toggle:hover::after {
+  transform: translateY(-50%) rotate(180deg);
+
 }
 
 /* .dropdown-toggle:hover .dropdown-toggle::before {

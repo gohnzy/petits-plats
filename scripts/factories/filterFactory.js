@@ -1,6 +1,5 @@
 import { thisDatas } from "../datas.js";
 import { normalizeChain } from "../utils/normalize.js";
-
 export class filters {
     recipesDatas = [];
     allIngredients = [];
@@ -62,15 +61,25 @@ export class filters {
     async addFilters(ingredientFilter, applianceFilter, ustensilFilter) {
 
         this.allIngredients.forEach(a => {
-            ingredientFilter.appendChild(this.ingredientFilter(a.normalizedLabel)).appendChild(this.ingredientFilterNames(a.label));
+            const ingredient = this.ingredientFilter(a.normalizedLabel);
+            const label = this.ingredientFilterNames(a.label);
+            ingredientFilter.appendChild(ingredient).appendChild(label);
+            const selectedFilters = document.querySelector(".ingredientFilter .selectedFilters");
+            const ingredientFilterFirstChild = document.querySelector(".ingredientFilter :nth-child(2)");
             const thisElement = document.querySelector(`[for="${a.normalizedLabel}"]`);
-            thisElement.addEventListener("change", (event) => {
-                const entireParent = event.target.parentNode;
-                const ingredientFilter = document.querySelector("ingredientFilter");
+            thisElement.addEventListener("change", () => {
                 
-                entireParent.style.display = "none";
-            });
+                if (thisElement.querySelector("input").checked) {
+                    thisElement.classList = "labelForChoice selectedFilter";
+                    selectedFilters.appendChild(thisElement);
+                } else {
+                    thisElement.classList = "labelForChoice";
+                    thisElement.remove();           
+                    ingredientFilter.insertBefore(ingredient, ingredientFilterFirstChild.nextElementSibling);
+                }
+            }); 
         });
+        
 
         this.allUstensils.forEach(a => {
             ustensilFilter.appendChild(this.ustensilFilter(a.normalizedLabel)).appendChild(this.ustensilFilterNames(a.label));

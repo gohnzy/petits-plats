@@ -1,25 +1,30 @@
 import { recipes } from "../datas/recipes.js";
 import { article } from "./factories/articleFactory.js";
 import { filters } from "./factories/filterFactory.js";
+import { searchBar } from "./utils/algo.js";
 
-const sub = document.querySelector("form")
+const submit = document.querySelector("form");
 
-sub.addEventListener("submit", (event) => {
+const searchBarAction = new searchBar();
+
+submit.addEventListener("submit", (event) => {
     event.preventDefault();
-    console.log(input.value);
+    searchBarAction.inputSend(input.value);
     clearInput();
 })
 
 
+
 const input = document.getElementById('search');
+searchBarAction.inputRefresh(input)
 const clearIcon = document.querySelector('.clear-icon');
 
 input.addEventListener("input", () => {
-    toggleClearIcon()
+    toggleClearIcon();
 });
 
 clearIcon.addEventListener("click", () => {
-    clearInput()
+    clearInput();
 })
 
 function toggleClearIcon() {
