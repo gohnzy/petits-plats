@@ -17,6 +17,7 @@ export class searchBar {
             testB.forEach(b => {
                 if (b.includes(datas.toLowerCase())) {
                     containsMatch = true;
+                    console.log(b);
                 }
             });
     
