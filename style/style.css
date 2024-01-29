@@ -323,7 +323,7 @@ main section.filters .results {
     text-align: center;
   }
 }
-main section.filters .selectedFilters {
+main section.filters .selectedFiltersBubbles {
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
@@ -333,7 +333,7 @@ main section.filters .selectedFilters {
   position: relative;
   margin-bottom: 50px;
 }
-main section.filters .selectedFilters .oneFilter {
+main section.filters .selectedFiltersBubbles .oneFilter {
   width: -moz-fit-content;
   width: fit-content;
   position: relative;
@@ -351,7 +351,7 @@ main section.filters .selectedFilters .oneFilter {
   border-radius: 10px;
   margin-right: 10px;
 }
-main section.filters .selectedFilters .oneFilter p {
+main section.filters .selectedFiltersBubbles .oneFilter p {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 80%;
@@ -359,21 +359,21 @@ main section.filters .selectedFilters .oneFilter p {
   flex-wrap: nowrap;
   margin: 0;
 }
-main section.filters .selectedFilters .oneFilter:hover {
+main section.filters .selectedFiltersBubbles .oneFilter:hover {
   font-weight: 700;
   cursor: pointer;
   transition: 0.1s;
 }
-main section.filters .selectedFilters .oneFilter:hover::before {
+main section.filters .selectedFiltersBubbles .oneFilter:hover::before {
   height: 3px;
 }
-main section.filters .selectedFilters .oneFilter:hover::after {
+main section.filters .selectedFiltersBubbles .oneFilter:hover::after {
   height: 3px;
 }
-main section.filters .selectedFilters .oneFilter:not(:hover) {
+main section.filters .selectedFiltersBubbles .oneFilter:not(:hover) {
   transition: 0.1s;
 }
-main section.filters .selectedFilters .oneFilter::before {
+main section.filters .selectedFiltersBubbles .oneFilter::before {
   content: "";
   position: absolute;
   width: 10px;
@@ -383,7 +383,7 @@ main section.filters .selectedFilters .oneFilter::before {
   right: 7px;
   transform: translateY(-50%) rotate(45deg);
 }
-main section.filters .selectedFilters .oneFilter::after {
+main section.filters .selectedFiltersBubbles .oneFilter::after {
   content: "";
   position: absolute;
   width: 10px;
