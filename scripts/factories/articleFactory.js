@@ -6,8 +6,10 @@ export class article {
 
     constructor() {}
 
-    init(section) {
+    init(section, datas) {
         this.recipeList(section);
+        this.createArticle(datas);
+        this.countRecipes(datas);
     }
 
     async callDatas() {
@@ -25,9 +27,9 @@ export class article {
     }
 
     async countRecipes(filteredRecipes) {
-        const recipesLength = (await this.callDatas());
+     
         const recipesCount = document.querySelector(".results");
-        recipesCount.innerText = `${recipesLength.length} recettes`;
+        recipesCount.innerText = `${filteredRecipes.length} recettes`;
     }
 
     createArticle(datas) {
@@ -40,7 +42,7 @@ export class article {
             article.setAttribute("id", `${id}`);
     
             const recipeImage = document.createElement("img");
-            recipeImage.setAttribute("src", `/datas/recipes_pictures/${image}`);
+            recipeImage.setAttribute("src", `../datas/recipes_pictures/${image}`);
             article.appendChild(recipeImage);
 
             const duration = document.createElement("em");

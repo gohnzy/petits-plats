@@ -212,6 +212,7 @@
 // }
 
 import { thisDatas } from "../datas.js";
+import { addBubble, clearBubble } from "../utils/bubbles.js";
 import { normalizeChain } from "../utils/normalize.js";
 export class filters {
     recipesDatas = [];
@@ -264,49 +265,40 @@ export class filters {
     filterUstensilsData() {
         this.recipesDatas.forEach(r => {
             r.ustensils.forEach(u => {
-                const normalizedU = this.normalize.normalizeFunction(u);
-
-        
-                const ustensilFound = this.allUstensils.find(ust => ust.normalizedLabel === normalizedU);
-                const applianceFound = this.allAppliances.find(appl => appl.normalizedLabel === normalizedU);
- 
-        
-                if (!ustensilFound && !applianceFound) {
-           
+                if (!this.allUstensils.find(ust => ust.normalizedLabel === this.normalize.normalizeFunction(u))) {
                     this.allUstensils.push({
-                        label: u, 
-                        normalizedLabel: normalizedU,
-                    });
-                } else if (applianceFound) {
-                    console.log(applianceFound);
-                }
+                        label: u,
+                        normalizedLabel: this.normalize.normalizeFunction(u),
+                        });
+                    }
             });
         });
-    }
+    }   
 
     async addFilters(ingredientFilter, applianceFilter, ustensilFilter) {
+        const filterSearch = document.querySelector(".ingredientFilter");
+        filterSearch.addEventListener("submit", (event) => {
+            event.preventDefault();
+        });
 
         this.allIngredients.forEach(a => {
             const ingredient = this.ingredientFilter(a.normalizedLabel);
             const label = this.ingredientFilterNames(a.label);
             ingredientFilter.appendChild(ingredient).appendChild(label);
             const selectedFilters = document.querySelector(".ingredientFilter .selectedFilters");
-            const bubbles = document.querySelector(".selectedFiltersBubbles");
             const ingredientFilterFirstChild = document.querySelector(".ingredientFilter :nth-child(2)");
             const thisElement = document.querySelector(`[for="${a.normalizedLabel}"]`);
-            const selectedFilterBubble = document.createElement("p");
-            selectedFilterBubble.classList.add("oneFilter");
+           
             thisElement.addEventListener("change", () => {
                 
                 if (thisElement.querySelector("input").checked) {
                     thisElement.classList = "labelForChoice selectedFilter";
+                    addBubble(thisElement.innerText);
                     selectedFilters.appendChild(thisElement);
-                    selectedFilterBubble.innerText = thisElement.innerText;
-                    bubbles.appendChild(selectedFilterBubble);
                 } else {
                     thisElement.classList = "labelForChoice";
+                    clearBubble(thisElement);
                     thisElement.remove();
-                    selectedFilterBubble.remove()
                     ingredientFilter.insertBefore(ingredient, ingredientFilterFirstChild.nextElementSibling);
                 }
             }); 
@@ -329,7 +321,6 @@ export class filters {
                     selectedFilters.appendChild(thisElement);
                     selectedFilterBubble.innerText = thisElement.innerText;
                     bubbles.appendChild(selectedFilterBubble);
-                    console.log(thisElement);
                 } else {
                     thisElement.classList = "labelForChoice";
                     thisElement.remove();
@@ -340,31 +331,31 @@ export class filters {
         });
         
         this.allUstensils.forEach(a => {
-            const ustensil = this.ustensilFilter(a.normalizedLabel);
-            const label = this.ustensilFilterNames(a.label);
-            ustensilFilter.appendChild(ustensil).appendChild(label);
-            const selectedFilters = document.querySelector(".ustensilFilter .selectedFilters");
-            const bubbles = document.querySelector(".selectedFiltersBubbles");
-            const ustensilsFilterFirstChild = document.querySelector(".ustensilFilter :nth-child(2)");
-            const thisElement = document.querySelector(`[for="${a.normalizedLabel}"]`);
-            const selectedFilterBubble = document.createElement("p");
-            selectedFilterBubble.classList.add("oneFilter");
-            thisElement.addEventListener("change", () => {
-                
-                if (thisElement.querySelector("input").checked) {
-                    thisElement.classList = "labelForChoice selectedFilter";
-                    selectedFilters.appendChild(thisElement);
-                    selectedFilterBubble.innerText = thisElement.innerText;
-                    bubbles.appendChild(selectedFilterBubble);
-                    console.log(thisElement);
-                } else {
-                    thisElement.classList = "labelForChoice";
-                    thisElement.remove();
-                    selectedFilterBubble.remove()
-                    ustensilFilter.insertBefore(ustensil, ustensilsFilterFirstChild.nextElementSibling);
-                }
-            })
-        });
+                        const ustensil = this.ustensilFilter(a.normalizedLabel);
+                        const label = this.ustensilFilterNames(a.label);
+                        ustensilFilter.appendChild(ustensil).appendChild(label);
+                        const selectedFilters = document.querySelector(".ustensilFilter .selectedFilters");
+                        const bubbles = document.querySelector(".selectedFiltersBubbles");
+                        const ustensilsFilterFirstChild = document.querySelector(".ustensilFilter :nth-child(2)");
+                        const thisElement = document.querySelector(`[for="${a.normalizedLabel}"]`);
+                        const selectedFilterBubble = document.createElement("p");
+                        selectedFilterBubble.classList.add("oneFilter");
+                        thisElement.addEventListener("change", () => {
+                            
+                            if (thisElement.querySelector("input").checked) {
+                                thisElement.classList = "labelForChoice selectedFilter";
+                                selectedFilters.appendChild(thisElement);
+                                selectedFilterBubble.innerText = thisElement.innerText;
+                                bubbles.appendChild(selectedFilterBubble);
+                                console.log(thisElement);
+                            } else {
+                                thisElement.classList = "labelForChoice";
+                                thisElement.remove();
+                                selectedFilterBubble.remove()
+                                ustensilFilter.insertBefore(ustensil, ustensilsFilterFirstChild.nextElementSibling);
+                            }
+                        })
+                    });
     }
 
     ingredientFilter(normalizedName) {
