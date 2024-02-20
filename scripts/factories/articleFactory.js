@@ -26,7 +26,7 @@ export class article {
         });
     }
 
-    async countRecipes(filteredRecipes) {
+    countRecipes(filteredRecipes) {
      
         const recipesCount = document.querySelector(".results");
         recipesCount.innerText = `${filteredRecipes.length} recettes`;

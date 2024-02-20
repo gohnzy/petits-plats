@@ -443,6 +443,24 @@ main {
         padding: 10px 10px;
         width: 100%;
         box-sizing: border-box;
+        min-height: 500px;
+
+        & ul {
+            color: darken($color: $second-color, $amount: 15%);
+            font-size: 30px;
+            margin-top: 50px;
+            height: 500px;
+
+            & p {
+                font-weight: 500;
+            }
+
+            & i {
+                display: block;
+                margin-top: 50px;
+                font-size: 16px;
+            }
+        }
       
 
         & article {

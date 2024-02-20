@@ -1,8 +1,12 @@
 import { recipes } from "../../datas/recipes.js";
 import { article } from "../factories/articleFactory.js";
 import { normalizeChain } from "./normalize.js";
-import { addBubble } from "./bubbles.js";
 import { DOM } from "../factories/DOM.js";
+import { init } from "../index.js";
+
+
+const section = document.querySelector(".recipes");
+const bubbles = document.querySelector(".selectedFiltersBubbles");
 
 export class searchBar {   
 
@@ -13,69 +17,129 @@ export class searchBar {
     recipeMatchingList = [];
 
     filterChecked = [];
-    filterOwnResults = [];
+
+    containsMatch = false;
+
+    recipeInfos = {};
 
     constructor() {
     }
 
+    inputStore() {
+        // if (!this.filterChecked.includes(this.normalize.normalizeFunction(inputValue))) {
+        //     this.filterChecked.push(this.normalize.normalizeFunction(inputValue));
+        // } else {
+        //     console.log(inputValue, " est déjà dans ", this.filterChecked);
+        // }
+        const tags =  bubbles.querySelectorAll(".oneFilter");
+        tags.forEach(tag => {
+            if(tags && !this.filterChecked.includes(this.normalize.normalizeFunction(tag.innerText))){
+                this.filterChecked.push(this.normalize.normalizeFunction(tag.innerText));
+            }
+        })
+
+        return this.filterChecked
+        
+    }
+
+    inputRemove(datas) {
+        const allFilterDisplayed = bubbles.querySelectorAll(":nth-child(n+1)");
+        allFilterDisplayed.forEach(element => {
+            element.addEventListener("click", ()=> {
+                const filterText = this.normalize.normalizeFunction(element.innerText);
+                const index = this.filterChecked.indexOf(filterText);
+                if (index !== -1) {
+                    this.filterChecked.splice(index, 1);
+                    console.log("Élément supprimé du tableau filterChecked : ", filterText);
+                    console.log(this.filterChecked);
+                    this.refreshPage(datas);
+                } else {
+                    console.log("L'élément n'a pas été trouvé dans filterChecked.");
+                }
+                if(bubbles.childNodes.length === 1) {
+                    init(datas);
+                } 
+            });
+        });    
+    }
+
+    refreshPage(datas) {
+        section.innerHTML = "";
+        let newList = [];
+        this.filterChecked.forEach(f=> {
+            newList = this.searchBarFilter(f, datas);
+        })
+        
+        newList.forEach(r => {
+            this.newDOM.refreshArticleList(r, newList);
+        });
+
+        if(newList.length ===0 ) {
+            this.newDOM.noResults();
+        }
+    }
+
     searchBarFilter(inputValue, datas) {
         if (inputValue) {
-            let containsMatch = false;
-            
-            
-            datas.forEach(recipe => {
-
-                const testId = recipe.id;
-
-                const testName = recipe.name.toLowerCase();
-                const testNameNormalized = this.normalize.normalizeFunction(testName);
-
-                const thisRecipeIngredients = recipe.ingredients;
-                let testIngredientsNormalized = "";
-                thisRecipeIngredients.forEach(i => {
-                    const testIngredient = i.ingredient.toLowerCase();
-                    testIngredientsNormalized = this.normalize.normalizeFunction(testIngredient);
-                });
-
-                const testDescription = recipe.description.toLowerCase();
-                const testDescriptionNormalized = this.normalize.normalizeFunction(testDescription);
-
-                const testAppliances = recipe.appliance.toLowerCase();
-                const testAppliancesNormalized = this.normalize.normalizeFunction(testAppliances);
-
-                const thisRecipeUstensils = recipe.ustensils;
-                let testUstensilNormalized = "";
-                thisRecipeUstensils.forEach(u => {
-                    const testUstensil = u.toLowerCase();
-                    testUstensilNormalized = this.normalize.normalizeFunction(testUstensil);
-                });
-
-                if (testNameNormalized.includes(this.normalize.normalizeFunction(inputValue)) || 
-                    testIngredientsNormalized.includes(this.normalize.normalizeFunction(inputValue)) ||
-                    testDescriptionNormalized.includes(this.normalize.normalizeFunction(inputValue)) ||
-                    testAppliancesNormalized.includes(this.normalize.normalizeFunction(inputValue)) ||
-                    testUstensilNormalized.includes(this.normalize.normalizeFunction(inputValue))) {
-                    this.containsMatch = true;
-                    if(this.recipeMatchingList.some(m => m.id === testId)) {
-                        // console.log("La recette suivante est déjà intégrée : ", testId);
-                    } else {
-                        this.recipeMatchingList.push(recipe);
-                        if(!this.filterChecked.includes(this.normalize.normalizeFunction(inputValue))) {
-                            this.filterChecked.push(inputValue);
-                        };
-                    };
-                } else {
-                    
-                };
+            this.recipeMatchingList = datas.filter(recipe => {
+                this.recipeInfos = this.stockNormalizedRecipeInfos(recipe);
+                
+                return this.checkInputAgainstFilter(this.recipeInfos);
             });
         }
 
-        
-        return {recipeMatchingList: this.recipeMatchingList, filterChecked: this.filterChecked, containsMatch: this.containsMatch}
+        return this.recipeMatchingList;
     }
 
-    refreshDOM() {
-        this.newDOM.createArticleList(this.searchBarFilter().recipeMatchingList)
+    filterTags(datas) {
+        this.recipeMatchingList = datas.filter(recipe => {
+            this.recipeInfos = this.stockNormalizedRecipeInfos(recipe);
+            
+            return this.checkInputAgainstFilter(this.recipeInfos);
+        });
+        return this.recipeMatchingList;
+    }
+
+    checkInputAgainstFilter(recipeInfos) {
+        return this.filterChecked.every(filter => {
+            return recipeInfos.name.includes(filter) || 
+                recipeInfos.ingredient.includes(filter) ||
+                recipeInfos.description.includes(filter) ||
+                recipeInfos.appliance.includes(filter) ||
+                recipeInfos.ustensils.includes(filter);
+        });
+    }
+
+    stockNormalizedRecipeInfos(recipe) {
+        let testName = recipe.name.toLowerCase();
+        let testNameNormalized = this.normalize.normalizeFunction(testName);
+        
+        let thisRecipeIngredients = recipe.ingredients;
+        let testIngredientsNormalized = "";
+        thisRecipeIngredients.forEach(i => {
+            let testIngredient = i.ingredient.toLowerCase();
+            testIngredientsNormalized = this.normalize.normalizeFunction(testIngredient);
+        });
+        
+        let testDescription = recipe.description.toLowerCase();
+        let testDescriptionNormalized = this.normalize.normalizeFunction(testDescription);
+        
+        let testAppliances = recipe.appliance.toLowerCase();
+        let testAppliancesNormalized = this.normalize.normalizeFunction(testAppliances);
+        
+        let thisRecipeUstensils = recipe.ustensils;
+        let testUstensilNormalized = "";
+        thisRecipeUstensils.forEach(u => {
+            let testUstensil = u.toLowerCase();
+            testUstensilNormalized = this.normalize.normalizeFunction(testUstensil);
+        });
+
+
+        return {name: testNameNormalized, 
+                ingredient: testIngredientsNormalized,
+                description: testDescriptionNormalized,
+                appliance: testAppliancesNormalized,
+                ustensils: testUstensilNormalized};
     }
 
     inputRefresh(input) {
