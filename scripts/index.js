@@ -60,10 +60,20 @@ function init() {
     event.preventDefault();
   }
 
-  function bubbleClickHandler() {
+  function bubbleClickHandler(event) {
+    const bubbleText = event.target.innerText;
+    const selectedFilters = document.querySelectorAll('.selectedFilter');
+
+    selectedFilters.forEach(filter => {
+        if (filter.innerText === bubbleText) {
+            filter.querySelector('input').checked = false;
+            filter.classList.remove('selectedFilter');
+        }
+    });
+
     reSearch(checked.filterChecked, this);
     this.remove();
-  }
+}
 
   function handleFilterChange(event, filterSection) {
     const getOptionInfo = DOM.filterChangeDisplay(event, filterSection);
@@ -123,6 +133,12 @@ function init() {
     searchAlgo.inputRemove(checked.filterChecked, input);
     DOM.bubbleList(checked.filterChecked, bubbleSection);
     const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, input, recipes);
+    const allBubbles = document.querySelectorAll(".oneFilter");
+    allBubbles.forEach(b => {
+      if (input === b.innerText) {
+        b.remove();
+      }
+    });
     updateDisplay(searchResult);
   }
 
