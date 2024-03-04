@@ -205,7 +205,9 @@ main section.filters .dropdown-menu {
   gap: 5px;
   padding: 0;
   box-sizing: border-box;
-  height: 400px;
+  height: -moz-fit-content;
+  height: fit-content;
+  max-height: 400px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -402,6 +404,21 @@ main section.recipes {
   padding: 10px 10px;
   width: 100%;
   box-sizing: border-box;
+  min-height: 500px;
+}
+main section.recipes ul {
+  color: #545454;
+  font-size: 30px;
+  margin-top: 50px;
+  height: 500px;
+}
+main section.recipes ul p {
+  font-weight: 500;
+}
+main section.recipes ul i {
+  display: block;
+  margin-top: 50px;
+  font-size: 16px;
 }
 main section.recipes article {
   position: relative;

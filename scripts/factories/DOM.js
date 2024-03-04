@@ -1,11 +1,10 @@
 import { addBubble } from "../utils/bubbles.js";
 import { filters } from "./filterFactory.js";
-import { article } from "./articleFactory.js";
+import { article } from "./displayDOM.js";
 
 const ingredientFilter = document.querySelector(".ingredientFilter");
 const applianceFilter = document.querySelector(".applianceFilter");
 const ustensilFilter = document.querySelector(".ustensilFilter");
-
 
 const section = document.querySelector(".recipes");
 
@@ -27,5 +26,15 @@ export class DOM {
 
     createArticleList(datas) {
         articleFactory.init(section, datas);
+    }
+
+    refreshArticleList(datas) {
+        section.innerHTML = "";
+        const matchingArticle = articleFactory.createArticle(datas);
+        return matchingArticle
+    }
+
+    refreshCount(datas) {
+        articleFactory.countRecipes(datas);
     }
 }

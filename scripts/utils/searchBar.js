@@ -1,8 +1,10 @@
 import { recipes } from "../../datas/recipes.js";
-import { article } from "../factories/articleFactory.js";
+import { article } from "../factories/displayDOM.js";
 import { normalizeChain } from "./normalize.js";
 import { addBubble } from "./bubbles.js";
 import { DOM } from "../factories/DOM.js";
+
+const section = document.querySelector(".recipes");
 
 export class searchBar {   
 
@@ -70,12 +72,13 @@ export class searchBar {
             });
         }
 
-        
-        return {recipeMatchingList: this.recipeMatchingList, filterChecked: this.filterChecked, containsMatch: this.containsMatch}
+        this.refreshDOM(this.recipeMatchingList)
     }
 
-    refreshDOM() {
-        this.newDOM.createArticleList(this.searchBarFilter().recipeMatchingList)
+    refreshDOM(datas) {
+        this.newDOM.refreshCount(datas);
+        console.log(this.recipeMatchingList);
+        this.recipeMatchingList.forEach(recipe => section.appendChild(this.newDOM.refreshArticleList(recipe)));
     }
 
     inputRefresh(input) {

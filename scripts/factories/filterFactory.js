@@ -213,7 +213,7 @@
 
 import { thisDatas } from "../datas.js";
 import { addBubble, clearBubble } from "../utils/bubbles.js";
-import { normalizeChain } from "../utils/normalize.js";
+import { normalizeFunction } from "../utils/normalize.js";
 export class filters {
     recipesDatas = [];
     allIngredients = [];
