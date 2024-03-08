@@ -235,8 +235,7 @@ main {
             }
 
             &::-webkit-scrollbar {
-                width: 20px;
-                display: none;
+                width: 15px;
             }
               
             &::-webkit-scrollbar-track {
@@ -281,7 +280,7 @@ main {
                         position: absolute;
                         width: 6%;
                         height: 2px;
-                        background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+                        background-color: #333;
                         top: 50%;
                         right: 8%;
                         transform: translateY(-50%) rotate(45deg);
@@ -292,7 +291,7 @@ main {
                         position: absolute;
                         width: 6%;
                         height: 2px;
-                        background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+                        background-color: #333;
                         top: 50%;
                         right: 8%;
                         transform: translateY(-50%) rotate(-45deg);
@@ -308,7 +307,7 @@ main {
    
             }
 
-            & input[type="text"] {
+            & input[type="search"] {
                 width: 100%;
                 height: 36px;
                 border: 1px solid #c6c6c6;
@@ -327,22 +326,28 @@ main {
             }
         }
 
-        & .dropdown:hover .dropdown-menu {
+        & .dropdown.open .dropdown-menu {
             display: flex;
             transition: 0;
         }
 
-        & .dropdown:hover button {
+        & .dropdown.open button {
             border-radius: 8px 8px 0 0;
             transition: 0;
         }
 
-        & .dropdown:active button {
+        & .dropdown.open:active button,
+        .dropdown:active button {
             background-color: white;
             color: black;
         }
 
-        & .dropdown:hover > .dropdown-menu {
+        & .dropdown.open:hover button,
+        .dropdown:hover button {
+            box-shadow: 0px 0px 10px rgba($color: black, $alpha: 0.1)
+        }
+
+        & .dropdown-menu {
             box-shadow: 10px 12px 10px 0px rgba($color: black, $alpha: 0.08);
         }
 
@@ -415,7 +420,7 @@ main {
                     position: absolute;
                     width: 10px;
                     height: 2px;
-                    background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+                    background-color: #333;
                     top: 53%;
                     right: 7px;
                     transform: translateY(-50%) rotate(45deg);
@@ -426,7 +431,7 @@ main {
                     position: absolute;
                     width: 10px;
                     height: 2px;
-                    background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+                    background-color: #333;
                     top: 53%;
                     right: 7px;
                     transform: translateY(-50%) rotate(-45deg);

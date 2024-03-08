@@ -221,8 +221,7 @@ main section.filters .dropdown-menu .selectedFilters {
   margin-bottom: 10px;
 }
 main section.filters .dropdown-menu::-webkit-scrollbar {
-  width: 20px;
-  display: none;
+  width: 15px;
 }
 main section.filters .dropdown-menu::-webkit-scrollbar-track {
   background-color: white;
@@ -263,7 +262,7 @@ main section.filters .dropdown-menu label.selectedFilter:hover::before {
   position: absolute;
   width: 6%;
   height: 2px;
-  background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+  background-color: #333;
   top: 50%;
   right: 8%;
   transform: translateY(-50%) rotate(45deg);
@@ -273,7 +272,7 @@ main section.filters .dropdown-menu label.selectedFilter:hover::after {
   position: absolute;
   width: 6%;
   height: 2px;
-  background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+  background-color: #333;
   top: 50%;
   right: 8%;
   transform: translateY(-50%) rotate(-45deg);
@@ -284,7 +283,7 @@ main section.filters .dropdown-menu .labelForChoice {
 main section.filters .dropdown-menu .labelForChoice:hover {
   font-weight: 700;
 }
-main section.filters .dropdown-menu input[type=text] {
+main section.filters .dropdown-menu input[type=search] {
   width: 100%;
   height: 36px;
   border: 1px solid #c6c6c6;
@@ -292,7 +291,7 @@ main section.filters .dropdown-menu input[type=text] {
   font-size: 14px;
   color: #7a7a7a;
 }
-main section.filters .dropdown-menu input[type=text]:focus {
+main section.filters .dropdown-menu input[type=search]:focus {
   outline: none;
 }
 main section.filters .dropdown-menu input[type=checkbox] {
@@ -300,19 +299,24 @@ main section.filters .dropdown-menu input[type=checkbox] {
      -moz-appearance: none;
           appearance: none;
 }
-main section.filters .dropdown:hover .dropdown-menu {
+main section.filters .dropdown.open .dropdown-menu {
   display: flex;
   transition: 0;
 }
-main section.filters .dropdown:hover button {
+main section.filters .dropdown.open button {
   border-radius: 8px 8px 0 0;
   transition: 0;
 }
+main section.filters .dropdown.open:active button,
 main section.filters .dropdown:active button {
   background-color: white;
   color: black;
 }
-main section.filters .dropdown:hover > .dropdown-menu {
+main section.filters .dropdown.open:hover button,
+main section.filters .dropdown:hover button {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+main section.filters .dropdown-menu {
   box-shadow: 10px 12px 10px 0px rgba(0, 0, 0, 0.08);
 }
 main section.filters .results {
@@ -380,7 +384,7 @@ main section.filters .selectedFiltersBubbles .oneFilter::before {
   position: absolute;
   width: 10px;
   height: 2px;
-  background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+  background-color: #333;
   top: 53%;
   right: 7px;
   transform: translateY(-50%) rotate(45deg);
@@ -390,7 +394,7 @@ main section.filters .selectedFiltersBubbles .oneFilter::after {
   position: absolute;
   width: 10px;
   height: 2px;
-  background-color: #333; /* Couleur de la croix, changez-la selon vos besoins */
+  background-color: #333;
   top: 53%;
   right: 7px;
   transform: translateY(-50%) rotate(-45deg);

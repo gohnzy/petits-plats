@@ -81,15 +81,17 @@ export class searchAlgos {
         };
     };
 
-    // inputRefresh(input) {
-    //     input.addEventListener("keydown", (event) => {
-    //         if(event.target.value.length > 2 && event.target.value.trim() !== "") {
-    //             if(event.keyCode === 8) {
-                    
-    //             };
-    //         } else {
-    //             console.log("Saisie vide");
-    //         };
-    //     });
-    // };
+    filterSearch(filterInput, allFilters) {
+        allFilters.forEach(i=> {
+            if(i.normalizedLabel.includes(normalizeFunction(filterInput))){
+                allFilters.push({
+                    label : i.label,
+                    normalizedLabel: normalizeFunction(filterInput),
+                })
+            } else {
+
+            }
+        });
+        
+    }
 }

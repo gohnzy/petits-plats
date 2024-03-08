@@ -3433,12 +3433,6 @@ textarea.form-control-lg {
 
 }
 
-.dropdown-toggle:hover::before,
-.dropdown-toggle:hover::after {
-  transform: translateY(-50%) rotate(180deg);
-
-}
-
 /* .dropdown-toggle:hover .dropdown-toggle::before {
   content: "";
   width: 0;

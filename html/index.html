@@ -34,37 +34,49 @@
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Ingrédients
                     </button>
-                    <form class="dropdown-menu ingredientFilter">
-                        <label for="ingredientSearch">
-                            <input type="text" id="ingredientSearch">
-                        </label>    
+                    <div class="dropdown-menu ingredientFilter">
+                        <form action="submit" class="ingredientSearch">
+                            <label for="ingredientSearch">
+                                <input type="search" id="ingredientSearch">
+                            </label>
+                        </form>    
                         <div class="selectedFilters">
                         </div>
-                    </form>
+                        <div class="allFilters">
+                        </div>
+                    </div>
                 </div>
                 <div class="dropdown col forAppliances">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Appareils
                     </button>
-                    <form class="dropdown-menu applianceFilter">
-                        <label for="applianceSearch">
-                            <input type="text" id="applianceSearch">
-                        </label> 
+                    <div class="dropdown-menu applianceFilter">
+                        <form action="submit" class="applianceSearch">
+                            <label for="applianceSearch">
+                                <input type="search" id="applianceSearch" action="submit">
+                            </label> 
+                        </form>
                         <div class="selectedFilters">
                         </div>
-                    </form>
+                        <div class="allFilters">
+                        </div>
+                    </div>
                 </div>
                 <div class="dropdown col forUstensils">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ustensiles
                     </button>
-                    <form class="dropdown-menu ustensilFilter">
-                        <label for="ustensilSearch">
-                            <input type="text" id="ustensilSearch">
-                        </label> 
+                    <div class="dropdown-menu ustensilFilter">
+                        <form action="submit" class="ustensilSearch">
+                            <label for="ustensilSearch">
+                                <input type="search" id="ustensilSearch" action="submit">
+                            </label> 
+                        </form>
                         <div class="selectedFilters">
                         </div>
-                    </form>
+                        <div class="allFilters">
+                        </div>
+                    </div>
                 </div>
                 <h2 class="results col"></h2>
                 <div class="selectedFiltersBubbles">
