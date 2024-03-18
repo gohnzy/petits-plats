@@ -73,24 +73,31 @@ function init() {
   }
 
   function handleInput(event) {
+    // if(event.target.value.length == 1 && checked.filterChecked.length == 1) {
+    //   console.log("ggg");
+    // }
+    console.log(checked.filterChecked);
     DOM.toggleClearIcon(input, clearIcon);
     if(event.inputType === "deleteContentBackward") {
+      checked.filterChecked.pop();
       if(event.target.value.length == 0) {
-        checked.filterChecked = [];
         initialDisplay();
       } else {
-        checked.filterChecked = [];
         initialDisplay();
         searchB(event.target.value);
       }
     };
-    if(event.target.value.length > 2 && event.target.value.trim() !== "") {
-        searchB(event.target.value);
+    if(event.target.value.length > 2 && event.target.value.trim() !== "" && bubbleSection.childNodes.length >= 1) {
+      if (event.target.value.length > 3) {
+        checked.filterChecked.pop();
+      }
+      console.log(checked.filterChecked);
+      searchB(event.target.value);
         
     } else {
-        console.log("Saisie vide");
+      console.log("lll");
     };
-}
+  }
 
   function handleClearIcon() {
     DOM.clearInput(input, clearIcon);
