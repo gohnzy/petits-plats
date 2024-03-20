@@ -29,7 +29,6 @@ const section = document.querySelector(".recipes");
 
 // Checked filters
 const checked = { filterChecked: [] };
-
 function init() {
   const allRecipes = new getDatas(recipes);
   const allIngredients = allRecipes.getAllIngredients();

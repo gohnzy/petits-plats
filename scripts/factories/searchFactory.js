@@ -1,5 +1,4 @@
 import { normalizeFunction } from "../utils/normalize.js";
-
 export class searchAlgos {
 
     recipeMatchingList = [];
@@ -9,77 +8,96 @@ export class searchAlgos {
 
     inputStore(inputValue, state) {
         const inputNormalized = normalizeFunction(inputValue);
-        if(!state.some(element => element.inputNormalized === inputNormalized)) {
+        let exists = false;
+        for (let i = 0; i < state.length; i++) {
+            if (state[i].inputNormalized === inputNormalized) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
             state.push({
-                inputNormalized: inputNormalized,
-                inputValue: inputValue
+                inputNormalized,
+                inputValue
             });
-        };
-    };
-
+        }
+    }
+    
     inputRemove(state, bubble) {
         const filterText = normalizeFunction(bubble);
-        const index = state.findIndex(item => item.inputNormalized === filterText);
-        if (index !== -1) {
-            state.splice(index, 1);
+        let indexToRemove = -1;
+        for (let i = 0; i < state.length; i++) {
+            if (state[i].inputNormalized === filterText) {
+                indexToRemove = i;
+                break;
+            }
         }
-    };
+        if (indexToRemove !== -1) {
+            state.splice(indexToRemove, 1);
+        }
+    }
 
     searchBarFilter(checked, inputValue, datas) {
+        const recipeMatchingList = [];
         if (inputValue) {
-            this.recipeMatchingList = datas.filter(recipe => {
-                this.recipeInfos = this.stockNormalizedRecipeInfos(recipe);
-                
-                return this.checkInputAgainstFilter(checked, this.recipeInfos);
-            });
+            for (let i = 0; i < datas.length; i++) {
+                const recipe = datas[i];
+                const recipeInfos = this.stockNormalizedRecipeInfos(recipe);
+                if (this.checkInputAgainstFilter(checked, recipeInfos)) {
+                    recipeMatchingList.push(recipe);
+                }
+            }
         }
-        
-        return this.recipeMatchingList;
+        return recipeMatchingList;
     };
-
+    
     checkInputAgainstFilter(checked, recipeInfos) {
-        return checked.every(filter => {
-            return recipeInfos.name.includes(filter.inputNormalized) || 
+        for (let i = 0; i < checked.length; i++) {
+            const filter = checked[i];
+            if (!(
+                recipeInfos.name.includes(filter.inputNormalized) ||
                 recipeInfos.ingredient.includes(filter.inputNormalized) ||
                 recipeInfos.description.includes(filter.inputNormalized) ||
                 recipeInfos.appliance.includes(filter.inputNormalized) ||
-                recipeInfos.ustensils.includes(filter.inputNormalized);
-        });
+                recipeInfos.ustensils.includes(filter.inputNormalized)
+            )) {
+                return false;
+            }
+        }
+        return true;
     };
+    
 
     stockNormalizedRecipeInfos(recipe) {
         let testName = recipe.name.toLowerCase();
         let testNameNormalized = normalizeFunction(testName);
         
-        let thisRecipeIngredients = recipe.ingredients;
         let testIngredientsNormalized = "";
-        thisRecipeIngredients.forEach(i => {
-            let testIngredient = i.ingredient.toLowerCase();
+        for (let i = 0; i < recipe.ingredients.length; i++) {
+            let testIngredient = recipe.ingredients[i].ingredient.toLowerCase();
             testIngredientsNormalized += normalizeFunction(testIngredient) + " ";
-        });
+        }
         
         let testDescription = recipe.description.toLowerCase();
         let testDescriptionNormalized = normalizeFunction(testDescription);
         
-        let testAppliances = recipe.appliance.toLowerCase();
-        let testAppliancesNormalized = normalizeFunction(testAppliances);
+        let testAppliancesNormalized = normalizeFunction(recipe.appliance.toLowerCase());
         
-        let thisRecipeUstensils = recipe.ustensils;
         let testUstensilNormalized = "";
-        thisRecipeUstensils.forEach(u => {
-            let testUstensil = u.toLowerCase();
+        for (let i = 0; i < recipe.ustensils.length; i++) {
+            let testUstensil = recipe.ustensils[i].toLowerCase();
             testUstensilNormalized += normalizeFunction(testUstensil) + " ";
-        });
-    
+        }
     
         return {
             name: testNameNormalized, 
             ingredient: testIngredientsNormalized.trim(),
             description: testDescriptionNormalized,
             appliance: testAppliancesNormalized,
-            ustensils: testUstensilNormalized
+            ustensils: testUstensilNormalized.trim()
         };
     };
+    
 
     filterSearch(filterInput, allFilters) {
         allFilters.forEach(i=> {
