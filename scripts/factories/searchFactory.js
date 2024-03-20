@@ -113,3 +113,7 @@ export class searchAlgos {
         
     }
 }
+
+// inputStore x 2,391,977 ops/sec ±3.51% (64 runs sampled)
+// inputRemove x 2,392,596 ops/sec ±2.87% (64 runs sampled)
+// searchBarFilter x 209,594,772 ops/sec ±3.91% (63 runs sampled)
