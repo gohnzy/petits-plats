@@ -80,20 +80,6 @@ export class searchAlgos {
             ustensils: testUstensilNormalized
         };
     };
-
-    filterSearch(filterInput, allFilters) {
-        allFilters.forEach(i=> {
-            if(i.normalizedLabel.includes(normalizeFunction(filterInput))){
-                allFilters.push({
-                    label : i.label,
-                    normalizedLabel: normalizeFunction(filterInput),
-                })
-            } else {
-
-            }
-        });
-        
-    }
 }
 
 // inputStore x 2,498,295 ops/sec ±0.43% (67 runs sampled)
