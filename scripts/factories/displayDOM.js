@@ -327,6 +327,7 @@ export class displayDOM {
     }
       
     clearInput(input, icon) {
+
         input.value = '';
         this.toggleClearIcon(input, icon);
     }

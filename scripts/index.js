@@ -122,8 +122,11 @@ function init() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    search();
-    DOM.clearInput(input, clearIcon);
+    if(input.value.trim() !== "") {
+      search();
+    }
+    
+    DOM.clearInput(input, clearIcon, checked.filterChecked);
   }
 
   function handleInput(event) {
@@ -147,6 +150,11 @@ function init() {
   }
 
   function handleClearIcon() {
+    checked.filterChecked.pop();
+    const searchAlgo = new searchAlgos();
+
+    const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, input, recipes);
+    updateDisplay(searchResult);
     DOM.clearInput(input, clearIcon);
   }
 
