@@ -147,6 +147,11 @@ function init() {
   }
 
   function handleClearIcon() {
+    checked.filterChecked.pop();
+    const searchAlgo = new searchAlgos();
+
+    const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, input, recipes);
+    updateDisplay(searchResult);
     DOM.clearInput(input, clearIcon);
   }
 
