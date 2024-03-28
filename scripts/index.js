@@ -10,17 +10,21 @@ const input = document.getElementById("search");
 const clearIcon = document.querySelector('.clear-icon');
 
 const ingredientFilter = document.querySelector(".ingredientFilter");
-const ingredientSearch = document.querySelector(".ingredientSearch");
+const ingredientSearch = document.getElementById("ingredientSearch");
+const ingredientSubmit = document.querySelector(".ingredientSearch");
 const ingredientSelected = ingredientFilter.querySelector(".selectedFilters");
 const allIngredientsOptions = ingredientFilter.querySelector(".allFilters");
 
+
 const applianceFilter = document.querySelector(".applianceFilter");
 const applianceSearch = document.getElementById("applianceSearch");
+const applianceSubmit = document.querySelector(".applianceSearch");
 const applianceSelected = applianceFilter.querySelector(".selectedFilters");
 const allAppliancesOptions = applianceFilter.querySelector(".allFilters");
 
 const ustensilFilter = document.querySelector(".ustensilFilter");
 const ustensilSearch = document.getElementById("ustensilSearch");
+const ustensilSubmit = document.querySelector(".ustensilSearch");
 const ustensilSelected = ustensilFilter.querySelector(".selectedFilters");
 const allUstensilsOptions = ustensilFilter.querySelector(".allFilters");
 
@@ -43,27 +47,78 @@ function init() {
   }
 
   initialDisplay()
-  
+
   // Event listeners
   mainSearch.addEventListener("submit", handleSubmit);
   mainSearch.addEventListener("input", handleInput);
   clearIcon.addEventListener("click", handleClearIcon);
-  ingredientSearch.addEventListener("submit", (event) => {
-    ingredientSearch.querySelector("input").value = "";
-    event.preventDefault();
-  });
+
+  const ingr = [];
+
+  ingredientSubmit.addEventListener("submit", (event) => {event.preventDefault()});
   ingredientSearch.addEventListener("input", (event) => {
-    handleFilterInput(event, allIngredients)
-    event.preventDefault();
+    const labels = allIngredientsOptions.querySelectorAll("label");
+    labels.forEach(l => {
+      ingr.push({
+        name: l.innerText,
+        norm: normalizeFunction(l.innerText)
+      })
+    })
+    handleFilterInput(event, ingr, ingredientFilter, allIngredientsOptions);
   });
-  applianceSearch.addEventListener("submit", handleFilterSubmit);
-  ustensilSearch.addEventListener("submit", handleFilterSubmit);
-  allIngredientsOptions.addEventListener("change", (event) => handleFilterChange(event, ingredientSelected));
-  ingredientSelected.addEventListener("change", (event) => handleFilterChange(event, ingredientSelected));
-  allAppliancesOptions.addEventListener("change", (event) => handleFilterChange(event, applianceSelected));
-  applianceSelected.addEventListener("change", (event) => handleFilterChange(event, ingredientSelected));
-  allUstensilsOptions.addEventListener("change", (event) => handleFilterChange(event, ustensilSelected));
-  ustensilSelected.addEventListener("change", (event) => handleFilterChange(event, ingredientSelected));
+
+  const app = [];
+
+  applianceSubmit.addEventListener("submit", (event) => {event.preventDefault()});
+  applianceSearch.addEventListener("input", (event) => {
+    const labels = allAppliancesOptions.querySelectorAll("label");
+    labels.forEach(l => {
+      app.push({
+        name: l.innerText,
+        norm: normalizeFunction(l.innerText)
+      })
+    })
+    handleFilterInput(event, app, applianceFilter, allAppliancesOptions);
+  });
+
+  const ust = [];
+
+  ustensilSubmit.addEventListener("submit", (event) => {event.preventDefault()});
+  ustensilFilter.addEventListener("input", (event) => {
+    const labels = allUstensilsOptions.querySelectorAll("label");
+    labels.forEach(l => {
+      ust.push({
+        name: l.innerText,
+        norm: normalizeFunction(l.innerText)
+      })
+      console.log(ust);
+    })
+    handleFilterInput(event, ust, ustensilFilter, allUstensilsOptions);
+  });
+  allIngredientsOptions.addEventListener("change", (event) => {
+    handleFilterChange(event, ingredientSelected);
+    ingredientSearch.value ="";
+  });
+  ingredientSelected.addEventListener("change", (event) => {
+    handleFilterChange(event, ingredientSelected);
+    ingredientSearch.value ="";
+  });
+  allAppliancesOptions.addEventListener("change", (event) => {
+    handleFilterChange(event, applianceSelected);
+    applianceSearch.value ="";
+  });
+  applianceSelected.addEventListener("change", (event) => {
+    handleFilterChange(event, applianceSelected);
+    applianceSearch.value ="";
+  });
+  allUstensilsOptions.addEventListener("change", (event) => {
+    handleFilterChange(event, ustensilSelected);
+    ustensilSearch.value ="";
+  });
+  ustensilSelected.addEventListener("change", (event) =>{
+    handleFilterChange(event, ustensilSelected);
+    ustensilSearch.value ="";
+  });
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -72,9 +127,6 @@ function init() {
   }
 
   function handleInput(event) {
-    // if(event.target.value.length == 1 && checked.filterChecked.length == 1) {
-    //   console.log("ggg");
-    // }
     console.log(checked.filterChecked);
     DOM.toggleClearIcon(input, clearIcon);
     if(event.inputType === "deleteContentBackward") {
@@ -83,35 +135,33 @@ function init() {
         initialDisplay();
       } else {
         initialDisplay();
-        searchB(event.target.value);
+        inputSearch(event.target.value);
       }
     };
     if(event.target.value.length > 2 && event.target.value.trim() !== "" && bubbleSection.childNodes.length >= 1) {
       if (event.target.value.length > 3) {
         checked.filterChecked.pop();
       }
-      console.log(checked.filterChecked);
-      searchB(event.target.value);
-        
-    } else {
-      console.log("lll");
-    };
+      inputSearch(event.target.value);  
+    } 
   }
 
   function handleClearIcon() {
     DOM.clearInput(input, clearIcon);
   }
 
-  function handleFilterSubmit(event) {
-    console.log(event);
-  }
+ function handleFilterInput(event, allOptions, filterSection, options) {
+  const inputValue = event.target.value
+    if(!inputValue.trim().length == 0) {
+      let optionsFilter = allOptions.filter(o => o.norm.includes(normalizeFunction(inputValue)));
+      DOM.emptyFilters(filterSection);
+      DOM.createIngredientsFilter2(options, optionsFilter);
+    } else {
+      DOM.emptyFilters(filterSection);
+      DOM.createIngredientsFilter2(options, allOptions);
+    };
 
-  function handleFilterInput(event) {
-    if(event.target.value.trim() !== "") {
-
-    }
-  }
-
+}
   function bubbleClickHandler(event) {
     const bubbleText = event.target.innerText;
     const selectedFilters = document.querySelectorAll('.selectedFilter');
@@ -128,11 +178,14 @@ function init() {
 }
 
   function handleFilterChange(event, filterSection) {
-    console.log(event);
-    event.preventDefault()
+    event.preventDefault();
+    if (input.value.length !== 0) {
+      input.value ="";
+      checked.filterChecked.pop();
+    }
     const getOptionInfo = DOM.filterChangeDisplay(event, filterSection);
     if(getOptionInfo.checked == 1) {
-      filterSearch(getOptionInfo.text)
+      filterSearch(getOptionInfo.text);
     } else {
       filterReSearch(getOptionInfo.text);
     }
@@ -177,12 +230,12 @@ function init() {
     });
   }
 
-  function searchB(filterInput) {
+  function inputSearch(filterInput) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputStore(filterInput, checked.filterChecked);
     
     const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, filterInput, recipes);
-    updateDisplay(searchResult);
+    updateDisplay(searchResult, input.value);
 }
 
   function reSearch(state, bubble) {
@@ -213,14 +266,6 @@ function init() {
     updateDisplay(searchResult);
   }
 
-  function reSearchB(state, bubble) {
-    const searchAlgo = new searchAlgos();
-    searchAlgo.inputRemove(state, bubble);
-
-    const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, bubble, recipes);
-    updateDisplay(searchResult);
-  }
-
   function filterSearch(input) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputStore(input, checked.filterChecked);
@@ -243,17 +288,19 @@ function init() {
     updateDisplay(searchResult);
   }
 
-  function updateDisplay(result) {
+  function updateDisplay(result, inputValue) {
     section.innerHTML = "";
-    DOM.displayRecipeList(section, result);
-    DOM.emptyFilters(allIngredientsOptions, allAppliancesOptions, allUstensilsOptions);
+    DOM.displayRecipeList(section, result, inputValue);
+    DOM.emptyFilters(ingredientFilter, applianceFilter, ustensilFilter);
     const newList = new getDatas(result);
     const a = newList.getAllIngredients();
     const b = newList.getAllAplliances();
     const c = newList.getAllUstensils();
     DOM.displayFilters(allIngredientsOptions, allAppliancesOptions, allUstensilsOptions, a, b, c);
+    
     addBubbleEventListeners();
   }
+  
 
   function addBubbleEventListeners() {
     const bubbles = bubbleSection.querySelectorAll(".oneFilter");

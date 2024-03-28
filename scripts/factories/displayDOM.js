@@ -8,16 +8,20 @@ export class displayDOM {
 
     }
 
-    displayRecipeList(section, datas) {
+    displayRecipeList(section, datas, selectedFilters) {
         this.createArticle(datas);
         this.appendArticles(section, datas);
         this.countRecipes(datas);
+        if (section.childNodes.length == 0) {
+            this.noResults(section, selectedFilters)
+        }
     }
 
     displayFilters(ingredientFilter,applianceFilter, ustensilFilter, ingredients, appliances, ustensils) {
         this.createIngredientsFilter(ingredientFilter, ingredients);
         this.createAppliancesFilter(applianceFilter, appliances);
         this.createUstensilsFilter(ustensilFilter, ustensils);
+       
     }
 
     filterChangeDisplay(event, section) {
@@ -41,12 +45,14 @@ export class displayDOM {
         }
     }
 
-    emptyFilters() {
-        document.querySelectorAll(".labelForChoice").forEach(element => {
-            if(!element.classList.contains("selectedFilter")) {
-                element.remove();
-            }
-        });
+    emptyFilters(...section) {
+        section.forEach(s => {
+            s.querySelectorAll(".labelForChoice").forEach(element => {
+                if(!element.classList.contains("selectedFilter")) {
+                    element.remove();
+                };
+            });
+        })
     }
 
     bubbleList(datas, section){
@@ -175,6 +181,18 @@ export class displayDOM {
         });
     }
 
+    createIngredientsFilter2(ingredientFilter, ingredients) {
+        ingredients.forEach(a => {
+            const escapedId = a.norm.replace(/([()%'])/g, "\\$1");
+            const existingElement = document.querySelector(`#${escapedId}`);
+            if (!existingElement) {
+                const ingredient = this.ingredientFilter(a.norm);
+                const label = this.ingredientFilterNames(a.name);
+                ingredientFilter.appendChild(ingredient).appendChild(label);
+            }
+        });
+    }
+
     createAppliancesFilter(applianceFilter, appliances) {
         appliances.forEach(a => {
             const escapedId = a.normalizedLabel.replace(/([()%'])/g, "\\$1");
@@ -274,7 +292,8 @@ export class displayDOM {
         section.appendChild(selectedFilterBubble);
     };
 
-    noResults(section) {
+    noResults(section, selectedFilter) {
+        const bubbles = document.querySelector(".selectedFiltersBubbles")
         section.innerHTML = "";
         const noResults = document.createElement("ul");
         const noResultsText = document.createElement("p");
@@ -286,10 +305,15 @@ export class displayDOM {
           notMatchingFilter.innerText = element.innerText;
           noResults.appendChild(notMatchingFilter);
         });
+        if(selectedFilter) {
+            const inputFilter = document.createElement("li");
+            inputFilter.innerText = selectedFilter;
+            noResults.appendChild(inputFilter);
+        }
+        
         const exemple = document.createElement("i");
         exemple.innerText = 'Essayez plutôt : "Lait de coco", "Pizza"... ';
         noResults.appendChild(exemple);
-        this.refreshCount([]);
         section.appendChild(noResults);
     }
 

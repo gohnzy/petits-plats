@@ -5,10 +5,6 @@ export class thisDatas {
 
     constructor() {}
 
-    // init() {
-    //     this.dataSet();
-    // }
-
     dataSet() {
         this.recipesDatas = recipes;
 
