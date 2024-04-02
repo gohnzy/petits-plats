@@ -1,4 +1,6 @@
 import { normalizeFunction } from "../utils/normalize.js";
+
+/// Class gérant la recherche
 export class searchAlgos {
 
     recipeMatchingList = [];
@@ -6,6 +8,7 @@ export class searchAlgos {
     constructor() {
     }
 
+     // Stock la valeur de l'input / du filter
     inputStore(inputValue, state) {
         const inputNormalized = normalizeFunction(inputValue);
         let exists = false;
@@ -23,6 +26,7 @@ export class searchAlgos {
         }
     }
     
+     // Retire la valeur
     inputRemove(state, bubble) {
         const filterText = normalizeFunction(bubble);
         let indexToRemove = -1;
@@ -37,6 +41,7 @@ export class searchAlgos {
         }
     }
 
+    // Normalize les données et cherche à travers pour la recherche principale
     searchBarFilter(checked, inputValue, datas) {
         const recipeMatchingList = [];
         if (inputValue) {
@@ -66,6 +71,7 @@ export class searchAlgos {
         return recipeMatchingList;
     };
     
+    // Cherche dans les données pour la recherche principale
     checkInputAgainstFilter(checked, recipeInfos) {
         for (let i = 0; i < checked.length; i++) {
             const filter = checked[i];
@@ -98,6 +104,7 @@ export class searchAlgos {
     };
     
 
+    // Normalize les données 
     stockNormalizedRecipeInfos(recipe) {
         let testName = recipe.name.toLowerCase();
         let testNameNormalized = normalizeFunction(testName);
