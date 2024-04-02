@@ -15,7 +15,6 @@ const ingredientSubmit = document.querySelector(".ingredientSearch");
 const ingredientSelected = ingredientFilter.querySelector(".selectedFilters");
 const allIngredientsOptions = ingredientFilter.querySelector(".allFilters");
 
-
 const applianceFilter = document.querySelector(".applianceFilter");
 const applianceSearch = document.getElementById("applianceSearch");
 const applianceSubmit = document.querySelector(".applianceSearch");
@@ -31,14 +30,18 @@ const allUstensilsOptions = ustensilFilter.querySelector(".allFilters");
 const bubbleSection = document.querySelector(".selectedFiltersBubbles");
 const section = document.querySelector(".recipes");
 
-// Checked filters
+// Liste des filtres déjà cochés
 const checked = { filterChecked: [] };
+
+// Fonction principale
 function init() {
   const allRecipes = new getDatas(recipes);
   const allIngredients = allRecipes.getAllIngredients();
   const allAppliances = allRecipes.getAllAplliances();
   const allUstensils = allRecipes.getAllUstensils();
   const DOM = new displayDOM();
+
+  // Display initial
   function initialDisplay() {
  
     DOM.displayRecipeList(section, recipes);
@@ -48,11 +51,23 @@ function init() {
 
   initialDisplay()
 
-  // Event listeners
+  ///// Event listeners /////
+
+  function addBubbleEventListeners() {
+    const bubbles = bubbleSection.querySelectorAll(".oneFilter");
+  
+    bubbles.forEach(b => b.removeEventListener("click", bubbleClickHandler));
+  
+    bubbles.forEach(b => b.addEventListener("click", bubbleClickHandler));
+  }
+
+  // Recherche principale
   mainSearch.addEventListener("submit", handleSubmit);
   mainSearch.addEventListener("input", handleInput);
   clearIcon.addEventListener("click", handleClearIcon);
 
+
+  // Gestion du filtres des ingrédients 
   const ingr = [];
 
   ingredientSubmit.addEventListener("submit", (event) => {event.preventDefault()});
@@ -67,6 +82,16 @@ function init() {
     handleFilterInput(event, ingr, ingredientFilter, allIngredientsOptions);
   });
 
+  allIngredientsOptions.addEventListener("change", (event) => {
+    handleFilterChange(event, ingredientSelected);
+    ingredientSearch.value ="";
+  });
+  ingredientSelected.addEventListener("change", (event) => {
+    handleFilterChange(event, ingredientSelected);
+    ingredientSearch.value ="";
+  });
+
+  // Gestion du filtres des appareils 
   const app = [];
 
   applianceSubmit.addEventListener("submit", (event) => {event.preventDefault()});
@@ -81,6 +106,16 @@ function init() {
     handleFilterInput(event, app, applianceFilter, allAppliancesOptions);
   });
 
+  allAppliancesOptions.addEventListener("change", (event) => {
+    handleFilterChange(event, applianceSelected);
+    applianceSearch.value ="";
+  });
+  applianceSelected.addEventListener("change", (event) => {
+    handleFilterChange(event, applianceSelected);
+    applianceSearch.value ="";
+  });
+
+  // Gestion du filtres des ustensils 
   const ust = [];
 
   ustensilSubmit.addEventListener("submit", (event) => {event.preventDefault()});
@@ -91,26 +126,10 @@ function init() {
         name: l.innerText,
         norm: normalizeFunction(l.innerText)
       })
-      console.log(ust);
     })
     handleFilterInput(event, ust, ustensilFilter, allUstensilsOptions);
   });
-  allIngredientsOptions.addEventListener("change", (event) => {
-    handleFilterChange(event, ingredientSelected);
-    ingredientSearch.value ="";
-  });
-  ingredientSelected.addEventListener("change", (event) => {
-    handleFilterChange(event, ingredientSelected);
-    ingredientSearch.value ="";
-  });
-  allAppliancesOptions.addEventListener("change", (event) => {
-    handleFilterChange(event, applianceSelected);
-    applianceSearch.value ="";
-  });
-  applianceSelected.addEventListener("change", (event) => {
-    handleFilterChange(event, applianceSelected);
-    applianceSearch.value ="";
-  });
+
   allUstensilsOptions.addEventListener("change", (event) => {
     handleFilterChange(event, ustensilSelected);
     ustensilSearch.value ="";
@@ -120,13 +139,11 @@ function init() {
     ustensilSearch.value ="";
   });
 
+  // Fonctions associées aux évènements //
   function handleSubmit(event) {
     event.preventDefault();
-    if(input.value.trim() !== "") {
-      search();
-    }
-    
-    DOM.clearInput(input, clearIcon, checked.filterChecked);
+    search();
+    DOM.clearInput(input, clearIcon);
   }
 
   function handleInput(event) {
@@ -135,7 +152,9 @@ function init() {
     if(event.inputType === "deleteContentBackward") {
       checked.filterChecked.pop();
       if(event.target.value.length == 0) {
-        initialDisplay();
+        if(bubbleSection.childNodes.length == 0) {
+          initialDisplay();
+        }       
       } else {
         initialDisplay();
         inputSearch(event.target.value);
@@ -164,12 +183,17 @@ function init() {
       let optionsFilter = allOptions.filter(o => o.norm.includes(normalizeFunction(inputValue)));
       DOM.emptyFilters(filterSection);
       DOM.createIngredientsFilter2(options, optionsFilter);
+      DOM.createAppliancesFilter2(options, optionsFilter);
+      DOM.createUstensilsFilter2(options, optionsFilter);
     } else {
       DOM.emptyFilters(filterSection);
       DOM.createIngredientsFilter2(options, allOptions);
+      DOM.createAppliancesFilter2(options, allOptions);
+      DOM.createUstensilsFilter2(options, allOptions);
     };
 
 }
+
   function bubbleClickHandler(event) {
     const bubbleText = event.target.innerText;
     const selectedFilters = document.querySelectorAll('.selectedFilter');
@@ -199,6 +223,7 @@ function init() {
     }
   }
 
+  // Recherche principale
   function search() {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputStore(input.value, checked.filterChecked);
@@ -238,14 +263,16 @@ function init() {
     });
   }
 
+  // Recherche principal à l'input
   function inputSearch(filterInput) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputStore(filterInput, checked.filterChecked);
     
     const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, filterInput, recipes);
     updateDisplay(searchResult, input.value);
-}
+  }
 
+  // Recherche à nouveau via la recherche principale
   function reSearch(state, bubble) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputRemove(state, bubble.innerText);
@@ -274,19 +301,21 @@ function init() {
     updateDisplay(searchResult);
   }
 
+  // Recherche via les filtres 
   function filterSearch(input) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputStore(input, checked.filterChecked);
     DOM.bubbleList(checked.filterChecked, bubbleSection);
-    const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, input, recipes);
+    const searchResult = searchAlgo.searchFilter(checked.filterChecked, input, recipes);
     updateDisplay(searchResult);
   }
 
+  // Recherche à nouveau via les filtres 
   function filterReSearch(input) {
     const searchAlgo = new searchAlgos();
     searchAlgo.inputRemove(checked.filterChecked, input);
     DOM.bubbleList(checked.filterChecked, bubbleSection);
-    const searchResult = searchAlgo.searchBarFilter(checked.filterChecked, input, recipes);
+    const searchResult = searchAlgo.searchFilter(checked.filterChecked, input, recipes);
     const allBubbles = document.querySelectorAll(".oneFilter");
     allBubbles.forEach(b => {
       if (normalizeFunction(input) === normalizeFunction(b.innerText)) {
@@ -296,6 +325,7 @@ function init() {
     updateDisplay(searchResult);
   }
 
+  // Modification du DOM en fonction des résultats
   function updateDisplay(result, inputValue) {
     section.innerHTML = "";
     DOM.displayRecipeList(section, result, inputValue);
@@ -308,19 +338,11 @@ function init() {
     
     addBubbleEventListeners();
   }
-  
-
-  function addBubbleEventListeners() {
-    const bubbles = bubbleSection.querySelectorAll(".oneFilter");
-  
-    bubbles.forEach(b => b.removeEventListener("click", bubbleClickHandler));
-  
-    bubbles.forEach(b => b.addEventListener("click", bubbleClickHandler));
-  }
 }
 
 init();
 
+// Ouverture des menus déroulants (filtres)
 function dropdownOpenClose() {
   const dropdowns = document.querySelectorAll(".dropdown");
 

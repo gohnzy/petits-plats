@@ -50,6 +50,21 @@ export class searchAlgos {
         }
         return recipeMatchingList;
     };
+
+    // Normalize les données et cherche à travers pour la recherche via les filtres
+    searchFilter(checked, inputValue, datas) {
+        const recipeMatchingList = [];
+        if (inputValue) {
+            for (let i = 0; i < datas.length; i++) {
+                const recipe = datas[i];
+                const recipeInfos = this.stockNormalizedRecipeInfos(recipe);
+                if (this.checkInputFilter(checked, recipeInfos)) {
+                    recipeMatchingList.push(recipe);
+                }
+            }
+        }
+        return recipeMatchingList;
+    };
     
     checkInputAgainstFilter(checked, recipeInfos) {
         for (let i = 0; i < checked.length; i++) {
@@ -57,7 +72,22 @@ export class searchAlgos {
             if (!(
                 recipeInfos.name.includes(filter.inputNormalized) ||
                 recipeInfos.ingredient.includes(filter.inputNormalized) ||
-                recipeInfos.description.includes(filter.inputNormalized) ||
+                recipeInfos.description.includes(filter.inputNormalized)
+            )) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // Cherche dans les données pour la recherche vie les filtres
+    checkInputFilter(checked, recipeInfos) {
+        for (let i = 0; i < checked.length; i++) {
+            const filter = checked[i];
+            if (!(
+                recipeInfos.name.includes(filter.inputNormalized) ||
+                recipeInfos.ingredient.includes(filter.inputNormalized) ||
+                recipeInfos.description.includes(filter.inputNormalized)  ||
                 recipeInfos.appliance.includes(filter.inputNormalized) ||
                 recipeInfos.ustensils.includes(filter.inputNormalized)
             )) {
@@ -99,7 +129,3 @@ export class searchAlgos {
     };
     
 }
-
-// inputStore x 2,391,977 ops/sec ±3.51% (64 runs sampled)
-// inputRemove x 2,392,596 ops/sec ±2.87% (64 runs sampled)
-// searchBarFilter x 209,594,772 ops/sec ±3.91% (63 runs sampled)

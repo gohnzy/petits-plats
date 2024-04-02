@@ -1,5 +1,7 @@
 import { normalizeFunction } from "../utils/normalize.js";
 
+// Extraction des ingrédients, appareils et ustensils depuis les données
+
 export class getDatas {
 
     allRecipes = [];
