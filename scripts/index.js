@@ -119,7 +119,7 @@ function init() {
   const ust = [];
 
   ustensilSubmit.addEventListener("submit", (event) => {event.preventDefault()});
-  ustensilFilter.addEventListener("input", (event) => {
+  ustensilSearch.addEventListener("input", (event) => {
     const labels = allUstensilsOptions.querySelectorAll("label");
     labels.forEach(l => {
       ust.push({
