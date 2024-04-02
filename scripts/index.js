@@ -119,7 +119,7 @@ function init() {
   const ust = [];
 
   ustensilSubmit.addEventListener("submit", (event) => {event.preventDefault()});
-  ustensilFilter.addEventListener("input", (event) => {
+  ustensilSearch.addEventListener("input", (event) => {
     const labels = allUstensilsOptions.querySelectorAll("label");
     labels.forEach(l => {
       ust.push({
@@ -178,21 +178,23 @@ function init() {
   }
 
  function handleFilterInput(event, allOptions, filterSection, options) {
+  console.log(allOptions);
   const inputValue = event.target.value
     if(!inputValue.trim().length == 0) {
       let optionsFilter = allOptions.filter(o => o.norm.includes(normalizeFunction(inputValue)));
+      
       DOM.emptyFilters(filterSection);
       DOM.createIngredientsFilter2(options, optionsFilter);
       DOM.createAppliancesFilter2(options, optionsFilter);
-      DOM.createUstensilsFilter2(options, optionsFilter);
+      // DOM.createUstensilsFilter2(options, optionsFilter);
     } else {
       DOM.emptyFilters(filterSection);
       DOM.createIngredientsFilter2(options, allOptions);
       DOM.createAppliancesFilter2(options, allOptions);
-      DOM.createUstensilsFilter2(options, allOptions);
+      // DOM.createUstensilsFilter2(options, allOptions);
     };
 
-}
+  }
 
   function bubbleClickHandler(event) {
     const bubbleText = event.target.innerText;
@@ -207,7 +209,7 @@ function init() {
 
     reSearch(checked.filterChecked, this);
     this.remove();
-}
+  }
 
   function handleFilterChange(event, filterSection) {
     event.preventDefault();
