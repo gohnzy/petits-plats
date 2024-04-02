@@ -8,6 +8,7 @@ export class displayDOM {
 
     }
 
+    // Affiche les recettes
     displayRecipeList(section, datas, selectedFilters) {
         this.createArticle(datas);
         this.appendArticles(section, datas);
@@ -17,6 +18,7 @@ export class displayDOM {
         }
     }
 
+    // Affiche les filtres
     displayFilters(ingredientFilter,applianceFilter, ustensilFilter, ingredients, appliances, ustensils) {
         this.createIngredientsFilter(ingredientFilter, ingredients);
         this.createAppliancesFilter(applianceFilter, appliances);
@@ -24,6 +26,7 @@ export class displayDOM {
        
     }
 
+    // Mise à jour des filtres
     filterChangeDisplay(event, section) {
         let onOff = null;
 
@@ -45,6 +48,7 @@ export class displayDOM {
         }
     }
 
+    // Vide les filtres
     emptyFilters(...section) {
         section.forEach(s => {
             s.querySelectorAll(".labelForChoice").forEach(element => {
@@ -55,6 +59,7 @@ export class displayDOM {
         })
     }
 
+    // Gestion de la liste des tags 
     bubbleList(datas, section){
     
         datas.forEach(element => {
@@ -69,12 +74,14 @@ export class displayDOM {
       });
     }
 
+    // Compte des recettes affichées
     countRecipes(datas) {
      
         const recipesCount = document.querySelector(".results");
         recipesCount.innerText = `${datas.length} recettes`;
     }
 
+    // Création des fiches de recette
     createArticle(datas) {
         const {id, image, name, ingredients,time, description} = datas;
 
@@ -162,6 +169,7 @@ export class displayDOM {
         }
     }
 
+    // Attachement des fiches au DOM
     appendArticles(section, datas) {
         section.innerHTML = "";
         datas.forEach(r => {
@@ -169,6 +177,7 @@ export class displayDOM {
         });
     }
 
+    // Création du filtres ingrédient
     createIngredientsFilter(ingredientFilter, ingredients) {
         ingredients.forEach(a => {
             const escapedId = a.normalizedLabel.replace(/([()%'])/g, "\\$1");
@@ -181,6 +190,7 @@ export class displayDOM {
         });
     }
 
+    // Création du filtres ingrédient lors de la mise à jour 
     createIngredientsFilter2(ingredientFilter, ingredients) {
         ingredients.forEach(a => {
             const escapedId = a.norm.replace(/([()%'])/g, "\\$1");
@@ -193,6 +203,7 @@ export class displayDOM {
         });
     }
 
+    // Création du filtres appareils
     createAppliancesFilter(applianceFilter, appliances) {
         appliances.forEach(a => {
             const escapedId = a.normalizedLabel.replace(/([()%'])/g, "\\$1");
@@ -205,6 +216,18 @@ export class displayDOM {
         });
     }
 
+    createAppliancesFilter2(applianceFilter, appliances) {
+        appliances.forEach(a => {
+            const escapedId = a.norm.replace(/([()%'])/g, "\\$1");
+            const existingElement = document.querySelector(`#${escapedId}`);
+            if (!existingElement) {
+                const appliance = this.applianceFilter(a.norm);
+                const label = this.applianceFilterNames(a.name);
+                applianceFilter.appendChild(appliance).appendChild(label);
+            }
+        });
+    }
+
     createUstensilsFilter(ustensilFilter, ustensils) {
         ustensils.forEach(a => {
             const escapedId = a.normalizedLabel.replace(/([()%'])/g, "\\$1");
@@ -212,6 +235,18 @@ export class displayDOM {
             if (!existingElement) {
                 const ustensil = this.ustensilFilter(a.normalizedLabel);
                 const label = this.ustensilFilterNames(a.label);
+                ustensilFilter.appendChild(ustensil).appendChild(label);
+            }
+        });
+    }
+
+    createUstensilsFilter2(ustensilFilter, ustensils) {
+        ustensils.forEach(a => {
+            const escapedId = a.norm.replace(/([()%'])/g, "\\$1");
+            const existingElement = document.querySelector(`#${escapedId}`);
+            if (!existingElement) {
+                const ustensil = this.ustensilFilter(a.norm);
+                const label = this.ustensilFilterNames(a.name);
                 ustensilFilter.appendChild(ustensil).appendChild(label);
             }
         });

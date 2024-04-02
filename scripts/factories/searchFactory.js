@@ -1,5 +1,8 @@
 import { normalizeFunction } from "../utils/normalize.js";
 
+
+/// Class gérant la recherche 
+
 export class searchAlgos {
 
     recipeMatchingList = [];
@@ -7,6 +10,7 @@ export class searchAlgos {
     constructor() {
     }
 
+    // Stock la valeur de l'input / du filter
     inputStore(inputValue, state) {
         const inputNormalized = normalizeFunction(inputValue);
         if(!state.some(element => element.inputNormalized === inputNormalized)) {
@@ -17,6 +21,7 @@ export class searchAlgos {
         };
     };
 
+    // Retire la valeur
     inputRemove(state, bubble) {
         const filterText = normalizeFunction(bubble);
         const index = state.findIndex(item => item.inputNormalized === filterText);
@@ -25,6 +30,7 @@ export class searchAlgos {
         }
     };
 
+    // Normalize les données et cherche à travers pour la recherche principale
     searchBarFilter(checked, inputValue, datas) {
         if (inputValue) {
             this.recipeMatchingList = datas.filter(recipe => {
@@ -37,16 +43,40 @@ export class searchAlgos {
         return this.recipeMatchingList;
     };
 
+    // Normalize les données et cherche à travers pour la recherche via les filtres
+    searchFilter(checked, inputValue, datas) {
+        if (inputValue) {
+            this.recipeMatchingList = datas.filter(recipe => {
+                this.recipeInfos = this.stockNormalizedRecipeInfos(recipe);
+                
+                return this.checkInputFilter(checked, this.recipeInfos);
+            });
+        }
+        
+        return this.recipeMatchingList;
+    };
+
+    // Cherche dans les données pour la recherche principale
     checkInputAgainstFilter(checked, recipeInfos) {
+        return checked.every(filter => {
+            return recipeInfos.name.includes(filter.inputNormalized) || 
+                recipeInfos.ingredient.includes(filter.inputNormalized) ||
+                recipeInfos.description.includes(filter.inputNormalized) 
+        });
+    };
+
+    // Cherche dans les données pour la recherche vie les filtres
+    checkInputFilter(checked, recipeInfos) {
         return checked.every(filter => {
             return recipeInfos.name.includes(filter.inputNormalized) || 
                 recipeInfos.ingredient.includes(filter.inputNormalized) ||
                 recipeInfos.description.includes(filter.inputNormalized) ||
                 recipeInfos.appliance.includes(filter.inputNormalized) ||
-                recipeInfos.ustensils.includes(filter.inputNormalized);
+                recipeInfos.ustensils.includes(filter.inputNormalized)
         });
     };
 
+    // Normalize les données 
     stockNormalizedRecipeInfos(recipe) {
         let testName = recipe.name.toLowerCase();
         let testNameNormalized = normalizeFunction(testName);
@@ -81,7 +111,3 @@ export class searchAlgos {
         };
     };
 }
-
-// inputStore x 2,498,295 ops/sec ±0.43% (67 runs sampled)
-// inputRemove x 2,447,895 ops/sec ±0.29% (67 runs sampled)
-// searchBarFilter x 21,117 ops/sec ±0.28% (67 runs sampled)
